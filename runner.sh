@@ -19,6 +19,7 @@ term_handler() {
 # on callback, kill the last background process, which is `tail -f /dev/null` and execute the specified handler
 trap 'kill ${!}; term_handler' SIGTERM
 
+
 ln -sf ${SSL_CERTIFICATE} /etc/gitlab-runner/certs/${GITLAB_HOST}.crt
 
 # register runner
@@ -29,7 +30,7 @@ yes '' | gitlab-runner register --url ${gitlab_service_url} \
                                 --output-limit "20480" \
                                 --docker-image "docker:latest" \
                                 --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
-                                --docker-extra-hosts ${GITLAB_HOST}:${GITLAB_IP}
+#                                --docker-extra-hosts ${GITLAB_HOST}:${GITLAB_IP}
 
 # assign runner token
 token=$(cat /etc/gitlab-runner/config.toml | grep token | awk '{print $3}' | tr -d '"')
