@@ -3,7 +3,7 @@ set -x
 
 pid=0
 token=()
-gitlab_service_url=http://${GITLAB_HOST}
+gitlab_service_url=${GITLAB_PROTOCOL}://${GITLAB_HOST}
 
 # SIGTERM-handler
 term_handler() {
