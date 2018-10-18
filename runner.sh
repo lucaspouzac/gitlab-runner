@@ -19,6 +19,8 @@ term_handler() {
 # on callback, kill the last background process, which is `tail -f /dev/null` and execute the specified handler
 trap 'kill ${!}; term_handler' SIGTERM
 
+ln -sf ${SSL_CERTIFICATE} /etc/gitlab-runner/certs/${GITLAB_HOST}.crt
+
 # register runner
 yes '' | gitlab-runner register --url ${gitlab_service_url} \
                                 --registration-token ${GITLAB_RUNNER_TOKEN} \
