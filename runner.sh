@@ -29,8 +29,7 @@ yes '' | gitlab-runner register --url ${gitlab_service_url} \
                                 --name "runner" \
                                 --output-limit "20480" \
                                 --docker-image "docker:latest" \
-                                --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
-#                                --docker-extra-hosts ${GITLAB_HOST}:${GITLAB_IP}
+                                --docker-volumes /var/run/docker.sock:/var/run/docker.sock
 
 # assign runner token
 token=$(cat /etc/gitlab-runner/config.toml | grep token | awk '{print $3}' | tr -d '"')
