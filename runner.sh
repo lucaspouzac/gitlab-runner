@@ -34,10 +34,13 @@ REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-image "docker:latest"'
 REGISTER_PARAMS=${REGISTER_PARAMS}' --locked=false'
 REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-volumes /var/run/docker.sock:/var/run/docker.sock'
 if [[ ${GITLAB_IP} ]]; then
-  REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-extra-hosts ${GITLAB_HOST}:${GITLAB_IP}'
+  REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-extra-hosts '${GITLAB_HOST}':'${GITLAB_IP}
 fi
 if [[ ${GITLAB_TAG_LIST} ]]; then
   REGISTER_PARAMS=${REGISTER_PARAMS}' --tag-list "'${GITLAB_TAG_LIST}'"'
+fi
+if [[ "${GITLAB_RUN_UNTAGGED}" = "y" ]]; then
+  REGISTER_PARAMS=${REGISTER_PARAMS}' --run-untagged'
 fi
 
 # register runner
