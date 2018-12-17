@@ -2,8 +2,9 @@
 set -x
 
 pid=0
-token=()
-gitlab_service_url=${GITLAB_PROTOCOL}://${GITLAB_HOST}
+
+TOKEN=()
+GITLAB_SERVICE_URL=${GITLAB_PROTOCOL}://${GITLAB_HOST}
 
 # SIGTERM-handler
 term_handler() {
@@ -11,7 +12,7 @@ term_handler() {
     kill -SIGTERM "$pid"
     wait "$pid"
   fi
-  gitlab-runner unregister -u ${gitlab_service_url} -t ${token}
+  gitlab-runner unregister -u ${GITLAB_SERVICE_URL} -t ${TOKEN}
   exit 143; # 128 + 15 -- SIGTERM
 }
 
@@ -24,26 +25,26 @@ if [[ ${SSL_CERTIFICATE} ]]; then
   ln -sf ${SSL_CERTIFICATE} /etc/gitlab-runner/certs/${GITLAB_HOST}.crt
 fi
 
-register_params='--url ${gitlab_service_url}'
-register_params=${register_params}' --registration-token '${GITLAB_RUNNER_TOKEN}
-register_params=${register_params}' --executor docker'
-register_params=${register_params}' --name "runner"'
-register_params=${register_params}' --output-limit 20480'
-register_params=${register_params}' --docker-image "docker:latest"'
-register_params=${register_params}' --locked=false'
-register_params=${register_params}' --docker-volumes /var/run/docker.sock:/var/run/docker.sock'
+REGISTER_PARAMS='--url '${GITLAB_SERVICE_URL}
+REGISTER_PARAMS=${REGISTER_PARAMS}' --registration-token '${GITLAB_RUNNER_TOKEN}
+REGISTER_PARAMS=${REGISTER_PARAMS}' --executor docker'
+REGISTER_PARAMS=${REGISTER_PARAMS}' --name "runner"'
+REGISTER_PARAMS=${REGISTER_PARAMS}' --output-limit 20480'
+REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-image "docker:latest"'
+REGISTER_PARAMS=${REGISTER_PARAMS}' --locked=false'
+REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-volumes /var/run/docker.sock:/var/run/docker.sock'
 if [[ ${GITLAB_IP} ]]; then
-  register_params=${register_params}' --docker-extra-hosts ${GITLAB_HOST}:${GITLAB_IP}'
+  REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-extra-hosts ${GITLAB_HOST}:${GITLAB_IP}'
 fi
 if [[ ${GITLAB_TAG_LIST} ]]; then
-  register_params=${register_params}' --tag-list "'${GITLAB_TAG_LIST}'"'
+  REGISTER_PARAMS=${REGISTER_PARAMS}' --tag-list "'${GITLAB_TAG_LIST}'"'
 fi
 
 # register runner
-yes '' | gitlab-runner register ${register_params}
+yes '' | gitlab-runner register ${REGISTER_PARAMS}
 
 # assign runner token
-token=$(cat /etc/gitlab-runner/config.toml | grep token | awk '{print $3}' | tr -d '"')
+TOKEN=$(cat /etc/gitlab-runner/config.toml | grep token | awk '{print $3}' | tr -d '"')
 
 # run multi-runner
 gitlab-ci-multi-runner run --user=gitlab-runner --working-directory=/home/gitlab-runner & pid="$!"
