@@ -30,7 +30,7 @@ register_params=${register_params}' --executor docker'
 register_params=${register_params}' --name "runner"'
 register_params=${register_params}' --output-limit 20480'
 register_params=${register_params}' --docker-image "docker:latest"'
-register_params=${register_params}' --locked false'
+register_params=${register_params}' --locked=false'
 register_params=${register_params}' --docker-volumes /var/run/docker.sock:/var/run/docker.sock'
 if [[ ${GITLAB_IP} ]]; then
   register_params=${register_params}' --docker-extra-hosts ${GITLAB_HOST}:${GITLAB_IP}'
