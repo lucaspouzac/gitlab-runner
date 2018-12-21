@@ -33,6 +33,12 @@ REGISTER_PARAMS=${REGISTER_PARAMS}' --output-limit 20480'
 REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-image "docker:latest"'
 REGISTER_PARAMS=${REGISTER_PARAMS}' --locked=false'
 REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-volumes /var/run/docker.sock:/var/run/docker.sock'
+
+IFS=',' read -ra VOLUMES <<< $CUSTOM_DOCKER_VOLUMES
+for VOLUME in "${VOLUMES[@]}"; do
+        REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-volumes '${VOLUME}
+done
+
 if [[ ${GITLAB_IP} ]]; then
   REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-extra-hosts '${GITLAB_HOST}':'${GITLAB_IP}
 fi

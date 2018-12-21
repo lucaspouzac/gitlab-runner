@@ -1,4 +1,4 @@
-FROM gitlab/gitlab-runner:v11.5.0
+FROM gitlab/gitlab-runner:v11.5.1
 MAINTAINER Lucas POUZAC <lucas.pouzac@lpoconseil.fr>
 
 ADD runner.sh /runner.sh
