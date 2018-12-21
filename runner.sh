@@ -42,6 +42,12 @@ done
 if [[ ${GITLAB_IP} ]]; then
   REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-extra-hosts '${GITLAB_HOST}':'${GITLAB_IP}
 fi
+
+IFS=',' read -ra EXTRA_HOSTS <<< $CUSTOM_DOCKER_EXTRA_HOSTS
+for EXTRA_HOST in "${EXTRA_HOSTS[@]}"; do
+        REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-extra-hosts '${EXTRA_HOST}
+done
+
 if [[ ${GITLAB_TAG_LIST} ]]; then
   REGISTER_PARAMS=${REGISTER_PARAMS}' --tag-list "'${GITLAB_TAG_LIST}'"'
 fi
