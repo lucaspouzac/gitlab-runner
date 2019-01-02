@@ -55,6 +55,11 @@ if [[ "${GITLAB_RUN_UNTAGGED}" = "y" ]]; then
   REGISTER_PARAMS=${REGISTER_PARAMS}' --run-untagged'
 fi
 
+IFS=',' read -ra ENVS <<< $GITLAB_ENVS
+for ENV in "${ENVS[@]}"; do
+        REGISTER_PARAMS=${REGISTER_PARAMS}' --env '${ENV}
+done
+
 # register runner
 yes '' | gitlab-runner register ${REGISTER_PARAMS}
 
