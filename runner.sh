@@ -63,6 +63,11 @@ done
 # register runner
 yes '' | gitlab-runner register ${REGISTER_PARAMS}
 
+# Update conccurent
+if [[ ${GITLAB_RUNNER_CONCURRENT} ]]; then
+  sed -i 's/concurrent = 1/concurrent = '${GITLAB_RUNNER_CONCURRENT}'/g' /etc/gitlab-runner/config.toml
+fi 
+
 # assign runner token
 TOKEN=$(cat /etc/gitlab-runner/config.toml | grep token | awk '{print $3}' | tr -d '"')
 
