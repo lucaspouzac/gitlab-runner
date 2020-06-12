@@ -49,7 +49,7 @@ for EXTRA_HOST in "${EXTRA_HOSTS[@]}"; do
 done
 
 if [[ ${GITLAB_TAG_LIST} ]]; then
-  REGISTER_PARAMS=${REGISTER_PARAMS}' --tag-list "'${GITLAB_TAG_LIST}'"'
+  REGISTER_PARAMS=${REGISTER_PARAMS}' --tag-list '${GITLAB_TAG_LIST}
 fi
 if [[ "${GITLAB_RUN_UNTAGGED}" = "y" ]]; then
   REGISTER_PARAMS=${REGISTER_PARAMS}' --run-untagged'
