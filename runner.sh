@@ -60,6 +60,9 @@ for ENV in "${ENVS[@]}"; do
         REGISTER_PARAMS=${REGISTER_PARAMS}' --env '${ENV}
 done
 
+# unregister all previous runners
+gitlab-runner unregister --all-runners
+
 # register runner
 yes '' | gitlab-runner register ${REGISTER_PARAMS}
 
