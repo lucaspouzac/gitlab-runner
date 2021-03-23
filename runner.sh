@@ -33,6 +33,8 @@ REGISTER_PARAMS=${REGISTER_PARAMS}' --output-limit 20480'
 REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-image "docker:latest"'
 REGISTER_PARAMS=${REGISTER_PARAMS}' --locked=false'
 REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-volumes /var/run/docker.sock:/var/run/docker.sock'
+REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-volumes /dev/shm:/dev/shm'
+REGISTER_PARAMS=${REGISTER_PARAMS}' --docker-volumes /cache'
 
 IFS=',' read -ra VOLUMES <<< $CUSTOM_DOCKER_VOLUMES
 for VOLUME in "${VOLUMES[@]}"; do
@@ -49,7 +51,7 @@ for EXTRA_HOST in "${EXTRA_HOSTS[@]}"; do
 done
 
 if [[ ${GITLAB_TAG_LIST} ]]; then
-  REGISTER_PARAMS=${REGISTER_PARAMS}' --tag-list "'${GITLAB_TAG_LIST}'"'
+  REGISTER_PARAMS=${REGISTER_PARAMS}' --tag-list '${GITLAB_TAG_LIST}
 fi
 if [[ "${GITLAB_RUN_UNTAGGED}" = "y" ]]; then
   REGISTER_PARAMS=${REGISTER_PARAMS}' --run-untagged'
